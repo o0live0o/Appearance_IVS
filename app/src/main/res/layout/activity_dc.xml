@@ -1,0 +1,79 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical"
+    tools:context=".activitys.DCActivity">
+
+    <include layout="@layout/nav_bar"></include>
+
+    <include layout="@layout/head_board"></include>
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal">
+        <Button
+            android:id="@+id/dc_btn_start"
+            style="@style/operatorBtn"
+            android:text="开 始 "
+            android:layout_marginTop="5dp"
+            android:background="@color/skyblue"
+            android:layout_weight="1"
+            android:onClick="onStart"/>
+        <Button
+            android:id="@+id/dc_btn_capture_front"
+            style="@style/operatorBtn"
+            android:text="拍照前"
+            android:layout_marginTop="5dp"
+            android:background="@color/skyblue"
+            android:layout_weight="1"
+            android:onClick="onCaputure"/>
+        <Button
+            android:id="@+id/dc_btn_capture_after"
+            style="@style/operatorBtn"
+            android:text="拍照后"
+            android:layout_marginTop="5dp"
+            android:background="@color/skyblue"
+            android:layout_weight="1"
+            android:onClick="onCaputure1"/>
+        <Button
+            android:id="@+id/dc_btn_submit"
+            style="@style/operatorBtn"
+            android:text="提 交"
+            android:layout_marginTop="5dp"
+            android:background="@color/skyblue"
+            android:layout_weight="1"
+            android:onClick="onSubmit"/>
+    </LinearLayout>
+    <ScrollView
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_weight="1"
+        android:layout_marginLeft="@dimen/marginSize"
+        android:layout_marginRight="@dimen/marginSize">
+        <android.support.v7.widget.RecyclerView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:id="@+id/dc_rv_item"></android.support.v7.widget.RecyclerView>
+    </ScrollView>
+
+    <EditText
+        android:id="@+id/dc_et_remark"
+        android:layout_width="match_parent"
+        android:layout_height="70dp"
+        android:textSize="15sp"
+        android:singleLine="false"
+        android:layout_marginLeft="@dimen/marginSize"
+        android:layout_marginRight="@dimen/marginSize"
+        android:paddingLeft="10dp"
+        android:paddingTop="3dp"
+        android:maxLines="10"
+        android:inputType="textMultiLine"
+        android:background="@drawable/background_edit"
+        android:hint="@string/check_remark"
+        android:gravity="top"
+        android:scrollHorizontally="false"/>
+</LinearLayout>

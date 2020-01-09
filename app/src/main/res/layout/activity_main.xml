@@ -1,0 +1,115 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical"
+    android:focusable="true"
+    android:focusableInTouchMode="true"
+    tools:context=".activitys.MainActivity">
+    <include layout="@layout/nav_bar"></include>
+
+
+    <com.o0live0o.app.appearance.views.LabelView
+        android:id="@+id/main_lv_operator"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        app:head_text="操作员:"
+        ></com.o0live0o.app.appearance.views.LabelView>
+
+    <EditText
+        android:id="@+id/main_tv_palteno"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:textSize="@dimen/itemTextSize"
+        android:layout_marginLeft="@dimen/marginSize"
+        android:layout_marginRight="@dimen/marginSize"
+        android:hint="车牌号码"/>
+
+    <EditText
+        android:id="@+id/main_tv_vin"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginLeft="@dimen/marginSize"
+        android:layout_marginRight="@dimen/marginSize"
+        android:textSize="@dimen/itemTextSize"
+        android:hint="VIN"/>
+<FrameLayout
+    android:id="@+id/main_search_container"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:layout_marginRight="@dimen/marginSize"
+    android:layout_marginLeft="@dimen/marginSize">
+    <LinearLayout
+        android:orientation="horizontal"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content">
+    <LinearLayout
+        android:layout_weight="1"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal">
+<TextView
+    android:layout_width="wrap_content"
+    android:layout_height="match_parent"
+    android:layout_marginLeft="@dimen/marginSize"
+    android:gravity="center_vertical"
+    android:layout_weight="1"
+    android:text="线号"/>
+    <Spinner
+        android:id="@+id/main_select_line"
+        android:layout_width="70dp"
+        android:layout_weight="2"
+        android:layout_height="30dp"
+        android:background="@drawable/rectangel"
+        android:layout_marginLeft="@dimen/marginSize"
+        android:layout_marginRight="@dimen/marginSize"
+        ></Spinner>
+    </LinearLayout>
+
+
+    <LinearLayout
+        android:layout_weight="1"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal">
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="match_parent"
+            android:layout_marginLeft="@dimen/marginSize"
+            android:gravity="center_vertical"
+            android:layout_weight="1"
+            android:text="工位"/>
+        <Spinner
+            android:id="@+id/main_select_c1no"
+            android:layout_weight="2"
+            android:layout_width="70dp"
+            android:layout_height="30dp"
+            android:background="@drawable/rectangel"
+            android:layout_marginLeft="@dimen/marginSize"
+            android:layout_marginRight="@dimen/marginSize"
+            ></Spinner>
+    </LinearLayout>
+    </LinearLayout>
+</FrameLayout>
+    <Button
+       style="@style/loginBtn"
+        android:background="@color/skyblue"
+        android:text="查 询"
+        android:layout_marginTop="5dp"
+        android:onClick="main_btn_search"/>
+
+    <ScrollView
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_marginTop="5dp"
+        android:layout_marginLeft="@dimen/marginSize"
+        android:layout_marginRight="@dimen/marginSize">
+        <android.support.v7.widget.RecyclerView
+            android:id="@+id/rv_car"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content">
+        </android.support.v7.widget.RecyclerView>
+    </ScrollView>
+</LinearLayout>
