@@ -15,7 +15,9 @@ import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.TextView;
+import android.widget.Toast;
 
+import com.o0live0o.app.appearance.MyApplication;
 import com.o0live0o.app.appearance.adapters.ChekItemAdapter.CheckUnpassItem;
 import com.o0live0o.app.appearance.bean.C1Bean;
 import com.o0live0o.app.appearance.bean.ResultBean;
@@ -218,20 +220,18 @@ public class C1Activity extends BaseActivity {
     }
 
     public void onPre(View view) {
-        new StatusTask().execute(((Button)view).getText().toString(),"1");
+        new StatusTask().execute(((Button)view).getText().toString(),"");
     }
 
     public void onCaputure(View view) {
-
-        new SendService().execute("", "803");
+        new SendService().execute("", "803");   //拍照指令由工位触发
         changeBtnState(false,false,true);
     }
 
     public void onStart(View view) {
         mCar.setStartTime(getTime());
         new SendStartSerivce().execute();
-        changeBtnState(false,true,false);
-        startTimes();
+
     }
 
     //更新LED状态
@@ -240,8 +240,7 @@ public class C1Activity extends BaseActivity {
         @Override
         protected DbResult doInBackground(String... strings) {
             String led= strings[0];
-            String status = strings[1];
-            return CURDHelper.sendStatus(mCar.getPlateNo()+"@"+led,mCar,status);
+            return CURDHelper.sendStatus(mCar.getPlateNo()+"@"+led,mCar,"");
         }
 
         @Override
@@ -305,15 +304,15 @@ public class C1Activity extends BaseActivity {
     }
 
     //开始
-    class SendStartSerivce extends AsyncTask<Void,Void,String>{
+    class SendStartSerivce extends AsyncTask<Void,Void,Boolean>{
 
         @Override
-        protected String doInBackground(Void... voids) {
+        protected Boolean doInBackground(Void... voids) {
             ResultBean resultBean = new ResultBean();
             DbResult dbResult = CURDHelper.sendStatus(mCar.getPlateNo() + "@" + "人工检查", mCar, "1001");
             resultBean.setSucc(dbResult.isSucc());
             resultBean.setMsg(dbResult.getMsg());
-            return resultBean.isSucc() + ":" + resultBean.getMsg();
+            return resultBean.isSucc();// + ":" + resultBean.getMsg();
         }
 
         @Override
@@ -323,18 +322,22 @@ public class C1Activity extends BaseActivity {
         }
 
         @Override
-        protected void onPostExecute(String s) {
+        protected void onPostExecute(Boolean s) {
             super.onPostExecute(s);
             hideProgressDialog();
+            if (s) {
+                changeBtnState(false, true, false);
+                startTimes();
+            } else
+                showToast("发送检测指令失败，请重新发送!");
         }
     }
 
     //发送拍照指令
-    class SendService extends AsyncTask<String,Void,String>{
+    class SendService extends AsyncTask<String,Void,DbResult>{
         @Override
-        protected String doInBackground(String... strings) {
-            CURDHelper.insertOrUpdate(mCar,"101");
-            return  "";
+        protected DbResult doInBackground(String... DbResult) {
+           return CURDHelper.insertOrUpdate(mCar,"101");
         }
 
         @Override
@@ -344,10 +347,11 @@ public class C1Activity extends BaseActivity {
         }
 
         @Override
-        protected void onPostExecute(String s) {
+        protected void onPostExecute(DbResult s) {
             super.onPostExecute(s);
             hideProgressDialog();
-
+            if (!s.isSucc())
+                showToast("发送拍照指令失败,请重新发送");
         }
     }
 

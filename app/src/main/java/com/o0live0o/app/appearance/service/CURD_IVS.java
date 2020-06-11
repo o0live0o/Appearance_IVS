@@ -139,7 +139,15 @@ public class CURD_IVS implements ICURD {
             c1_pd = "2";
             c1_bhgnr = failList.stream().map(item->item.getItemName()).collect(Collectors.joining(","));
             c1_bhgx = failList.stream().map(item->item.getItemId()+"-1").collect(Collectors.joining(","));
+        }else {
+            c1_pd = "1";
         }
+
+        if ("1".equals(c1_pd)){
+            c1_bhgx = "-";
+            c1_bhgnr = "无";
+        }
+
 
 
 
@@ -150,7 +158,13 @@ public class CURD_IVS implements ICURD {
         params.add(c1_bhgx);
         params.add(car.getStartTime());
         params.add(car.getEndTime());
-        params.add(tempBean.getVal1() == null ?"" :tempBean.getVal1()+","+c1_bhgnr);
+
+        if(!"1".equals(c1_pd)) {
+            if (tempBean.getVal1() != null && tempBean.getVal1().isEmpty())
+                c1_bhgnr = tempBean.getVal1() + "," + c1_bhgnr;
+        }
+
+        params.add(c1_bhgnr);
         params.add(car.getTestId());
 
         String searchSql = "SELECT COUNT(*) AS ct FROM RESULT_CHASISS_MANUAL WHERE JCLSH = '"+car.getTestId()+"'";
@@ -192,6 +206,7 @@ public class CURD_IVS implements ICURD {
         String dc_pd = "0";
         String dc_bhgx = "-";
         String dc_jyxm = "";
+        String dc_bhgnr = "无";
 
         List<ExteriorBean> failList = list.stream().filter((ExteriorBean bean)->bean.getItemState().equals(CheckState.FAIL)).collect(Collectors.toList());
         List<ExteriorBean> passList = list.stream().filter((ExteriorBean bean)->bean.getItemState().equals(CheckState.PASS)).collect(Collectors.toList());
@@ -202,10 +217,14 @@ public class CURD_IVS implements ICURD {
 
         if (failList.size() > 0){
             dc_pd = "2";
+            dc_bhgx = failList.stream().map(item->item.getItemName()).collect(Collectors.joining(","));
+            dc_bhgnr = failList.stream().map(item->item.getItemId()+"-1").collect(Collectors.joining(","));
         }
-        dc_bhgx = failList.stream().map(item->item.getItemId()+"-1").collect(Collectors.joining(","));
+        //dc_bhgx = failList.stream().map(item->item.getItemId()+"-1").collect(Collectors.joining(","));
         List<Object> params = new ArrayList<>();
         params.add(dc_pd);
+        params.add(dc_bhgnr);
+        params.add(dc_bhgx);
         params.add(FinalData.getOperator());
         params.add(car.getStartTime());
         params.add(car.getEndTime());
@@ -214,10 +233,10 @@ public class CURD_IVS implements ICURD {
         String searchSql = "SELECT COUNT(*) AS ct FROM RESULT_CHASISS_MANUAL WHERE JCLSH = '"+car.getTestId()+"'";
         String sql = "";
         if (ssmsHelper.exist(searchSql,null)){
-            sql = "UPDATE RESULT_CHASISS_MANUAL SET DTDP_PD = ?,DTDPCZY = ?,KSSJ = ?,JSSJ = ? WHERE JCLSH = ?";
+            sql = "UPDATE RESULT_CHASISS_MANUAL SET DTDP_PD = ?,DTDP_MS = ?,DGJYBHGX= ISNULL(DGJYBHGX,'')+?,DTDPCZY = ?,KSSJ = ?,JSSJ = ? WHERE JCLSH = ?";
 
         }else {
-            sql = "INSERT INTO RESULT_CHASISS_MANUAL (DTDP_PD,DTDPCZY,KSSJ,JSSJ,JCLSH) VALUES (?,?,?,?,?)";
+            sql = "INSERT INTO RESULT_CHASISS_MANUAL (DTDP_PD,DTDP_MS,DGJYBHGX,DTDPCZY,KSSJ,JSSJ,JCLSH) VALUES (?,?,?,?,?,?,?)";
         }
         DbResult dbResult = ssmsHelper.insertAndUpdateWithPara(sql,params);
 
@@ -251,12 +270,13 @@ public class CURD_IVS implements ICURD {
 
     @Override
     public <T> DbResult sendStatus(String str, CarBean car,String status, T t) {
+        //UdpTool.send("111","11111");
         DbResult dbResult = null;
         if(FinalData.isDiapatchMode()) {
             List<Object> params = new ArrayList<>();
             String sql = "UPDATE VEHICLE_DISPATCH SET LED = ? ";
             params.add(str);
-            if (status.length() > 0) {
+            if (status.length() > 0 ) {
                 sql += ",ZDGWBH = ? ";
                 params.add(status);
             }

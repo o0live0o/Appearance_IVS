@@ -82,14 +82,14 @@
             android:layout_weight="1"
             android:text="工位"/>
         <Spinner
-            android:id="@+id/main_select_c1no"
-            android:layout_weight="2"
-            android:layout_width="70dp"
-            android:layout_height="30dp"
-            android:background="@drawable/rectangel"
-            android:layout_marginLeft="@dimen/marginSize"
-            android:layout_marginRight="@dimen/marginSize"
-            ></Spinner>
+        android:id="@+id/main_select_c1no"
+        android:layout_weight="2"
+        android:layout_width="70dp"
+        android:layout_height="30dp"
+        android:background="@drawable/rectangel"
+        android:layout_marginLeft="@dimen/marginSize"
+        android:layout_marginRight="@dimen/marginSize"
+        ></Spinner>
     </LinearLayout>
     </LinearLayout>
 </FrameLayout>

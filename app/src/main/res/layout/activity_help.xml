@@ -81,6 +81,33 @@
         android:layout_height="wrap_content"
         android:text="支持动态底盘检验"
         android:textSize="22sp"/>
+
+    <TextView
+        android:layout_width="match_parent"
+        android:layout_height="42sp"
+        android:textSize="25sp"
+        android:textColor="@color/blueviolet"
+        android:text="LED"
+        android:gravity="center"
+        android:visibility="gone"
+        android:background="@color/ivory"/>
+    <com.o0live0o.app.appearance.views.InputWithHeadView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:id="@+id/help_led_ip"
+        android:visibility="gone"
+        app:input_headtext="IP：">    </com.o0live0o.app.appearance.views.InputWithHeadView>
+    <View
+        style="@style/line"></View>
+    <com.o0live0o.app.appearance.views.InputWithHeadView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:id="@+id/help_led_port"
+        android:visibility="gone"
+        app:input_headtext="端口：">    </com.o0live0o.app.appearance.views.InputWithHeadView>
+    <View
+        style="@style/line"></View>
+
     <Button
         style="@style/loginBtn"
         android:layout_marginTop="10dp"
@@ -88,15 +115,17 @@
         android:onClick="onSaveClick"
         android:text="@string/save"
         />
-    <LinearLayout
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_weight="1"></LinearLayout>
-
     <Button
         style="@style/loginBtn"
         android:layout_marginBottom="20dp"
         android:background="@color/lightblue"
         android:onClick="onLoginClick"
+        android:layout_marginTop="10dp"
         android:text="@string/logout" />
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_weight="1"></LinearLayout>
+
+
 </LinearLayout>

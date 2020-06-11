@@ -6,6 +6,10 @@ import android.content.SharedPreferences;
 import android.preference.PreferenceManager;
 
 import com.o0live0o.app.appearance.data.FinalData;
+import com.o0live0o.app.appearance.service.ByteArrayBuffer;
+import com.o0live0o.app.appearance.service.ByteTools;
+import com.o0live0o.app.appearance.service.CRC16;
+import com.o0live0o.app.appearance.service.UdpTool;
 import com.o0live0o.app.appearance.service.WebServiceHelper;
 import com.o0live0o.app.dbutils.SSMSHelper;
 
@@ -32,6 +36,40 @@ public class MyApplication extends Application {
 
     private void init() {
 
+//        StringBuilder sb = new StringBuilder();
+//        int upLen = "111".length();
+//        int downLen = "11111".length();
+//
+//        byte[] totalLenByte = new byte[]{0x08};// ByteTools.intToByteArray(upLen+downLen);
+//        byte[] upLenByte = new byte[]{0x03};// ByteTools.intToByteArray(upLen);
+//        byte[] downByte = new byte[]{0x05};// ByteTools.intToByteArray(downLen);
+//        ByteArrayBuffer bufferArray = new ByteArrayBuffer();
+//       byte[] y11 =  "成都弥荣科技发展有限公司".getBytes();
+//       int len1 = y11.length;
+//       byte[] b12 = "成都弥荣科技公司".getBytes();
+//        int len2 = b12.length;
+//        byte[] b111 = ByteTools.intToByteArray(len1);
+//        bufferArray.append(new byte[]{0x01});
+//        bufferArray.append(upLenByte);
+//        bufferArray.append(downByte);
+//        bufferArray.append("111".getBytes());
+//        bufferArray.append("11111".getBytes());
+//        int crcVal = CRC16.CRC16_MODBUS(bufferArray.toByteArray());
+//        ByteArrayBuffer buffer = new ByteArrayBuffer();
+//
+//        buffer.append(new byte[]{0x02});
+//        buffer.append(new byte[]{0x01});
+//        buffer.append(new byte[]{0x01});
+//        buffer.append(totalLenByte);
+//        buffer.append(upLenByte);
+//        buffer.append(downByte);
+//        buffer.append("111".getBytes());
+//        buffer.append("11111".getBytes());
+//        buffer.append(ByteTools.intToByteArray(crcVal));
+//        buffer.append(new byte[]{0x10,0x11});
+//
+//        byte[] data = buffer.toByteArray();
+//        String s = ByteTools.bytes2HexString(data);
         pref = PreferenceManager.getDefaultSharedPreferences(MyApplication.context);
 
         String dataBase = pref.getString("database", this.getString(R.string.db_name));
@@ -45,6 +83,9 @@ public class MyApplication extends Application {
         String web_key = pref.getString("web_key",getString(R.string.web_key));
         String web_jkxlh = pref.getString("web_jkxlh",getString(R.string.web_jcxlh));
         String web_org= pref.getString("web_org",getString(R.string.web_org));
+
+        int UdpPort = pref.getInt("udp_port",54321);
+        String UdpIp = pref.getString("udp_ip","192.168.15.30");
 
         FinalData.setCheckC1(pref.getBoolean("chkc1",true));
         FinalData.setCheckDC(pref.getBoolean("chkdc",true));
@@ -64,6 +105,7 @@ public class MyApplication extends Application {
                 user,
                 pwd,instance,context);
 
+        UdpTool.init(UdpIp,UdpPort,1);
         WebServiceHelper.getInstance().init(web_url,web_org);
     }
 }

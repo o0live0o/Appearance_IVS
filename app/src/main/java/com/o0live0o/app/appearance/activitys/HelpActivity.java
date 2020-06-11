@@ -15,7 +15,7 @@ import com.o0live0o.app.appearance.views.InputWithHeadView;
 
 public class HelpActivity extends BaseActivity {
 
-    private InputWithHeadView iwhC1_NO;
+    private InputWithHeadView iwhC1_NO,iwhLedIp,iwdLedPort;
     private CheckBox chkF1,chkDC,chkC1,chkF1_To_DC,chkIsDispatch,chkFirstCheckDC;
 
     private SharedPreferences pref;
@@ -39,11 +39,15 @@ public class HelpActivity extends BaseActivity {
         chkF1_To_DC = findViewById(R.id.help_chkf1_to_dc);
         chkIsDispatch = findViewById(R.id.help_chkDispatch);
         chkFirstCheckDC= findViewById(R.id.chkDcFirst);
+        iwhLedIp = findViewById(R.id.help_led_ip);
+        iwdLedPort = findViewById(R.id.help_led_port);
         pref = PreferenceManager.getDefaultSharedPreferences(MyApplication.getContext());
     }
 
     private void readData(){
         String c1_no = pref.getString("c1_no",  "1");
+        int ledPort =  pref.getInt("udp_port",54321);
+        String  ledIp=   pref.getString("udp_ip","192.168.15.30");
         boolean bF1 = pref.getBoolean("chkf1",true);
         boolean bc1 = pref.getBoolean("chkc1",true);
         boolean bDC = pref.getBoolean("chkdc",true);
@@ -51,6 +55,8 @@ public class HelpActivity extends BaseActivity {
         boolean bIsDspatch = pref.getBoolean("IsDispatch",true);
         boolean bFirstCheckDc =  pref.getBoolean("FirstCheckDC",true);
         iwhC1_NO.setInputStr(c1_no);
+        iwdLedPort.setInputStr(String.valueOf(ledPort));
+        iwhLedIp.setInputStr(ledIp);
         chkC1.setChecked(bc1);
         chkF1.setChecked(bF1);
         chkDC.setChecked(bDC);
@@ -72,6 +78,8 @@ public class HelpActivity extends BaseActivity {
     public void onSaveClick(View view) {
         editor = pref.edit();
         editor.putString("c1_no", iwhC1_NO.getInputStr());
+        editor.putString("udp_ip", iwhLedIp.getInputStr());
+        editor.putInt("udp_port", Integer.parseInt(iwdLedPort.getInputStr()));
         editor.putBoolean("chkf1",chkF1.isChecked());
         editor.putBoolean("chkc1",chkC1.isChecked());
         editor.putBoolean("chkdc",chkDC.isChecked());

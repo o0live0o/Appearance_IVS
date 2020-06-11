@@ -168,7 +168,7 @@ public class DCActivity extends BaseActivity {
 
     public void onSubmit(View view) {
         mCar.setEndTime(getTime());
-        new SubmitTask().execute();
+        new SubmitTask().execute(mEtRemark.getText().toString());
     }
 
     private void updateReamrk(){
@@ -195,10 +195,11 @@ public class DCActivity extends BaseActivity {
         new CaptureTask().execute("102");
     }
 
-    class SubmitTask extends AsyncTask<Void,Void, DbResult> {
+    class SubmitTask extends AsyncTask<String,Void, DbResult> {
         @Override
-        protected DbResult doInBackground(Void... voids) {
+        protected DbResult doInBackground(String... strings) {
             TempBean tempBean = new TempBean();
+            tempBean.setVal1(strings[0]);
             tempBean.setBval(true);
             if (FinalData.isDiapatchMode() && mCar.getCheckItem().contains(FinalData.C1) && FinalData.isF1_To_DC() && FinalData.isFirstChekcDC())
                 tempBean.setBval(false);
@@ -230,6 +231,8 @@ public class DCActivity extends BaseActivity {
             }
         }
     }
+
+
 
     class StatusTask extends AsyncTask<String,Void,DbResult>{
 
